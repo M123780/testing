@@ -39,7 +39,7 @@ console.log(`Addition: ${calcu.add(a,b)}`);
 console.log(`subtratct: ${calcu.sub(a,b)}`);
 console.log(`MUL: ${calcu.mul(a,b)}`);
 console.log(`Div: ${calcu.div(a,b)}`);
-console.log(`Mod: ${calcu.mod(a,b)}`);*/
+console.log(`Mod: ${calcu.mod(a,b)}`);
 var table = require('./table.js');
 var readline = require('readline');
 var http = require('http');
@@ -52,25 +52,59 @@ const rl = readline.createInterface({
 rl.question("Enter any number: ", (a) => {
     console.log(`Table of ${a}`);
 
-    // Create an HTTP server outside the loop
     const server = http.createServer((req, res) => {
-        // This will be called for each incoming request
+
         res.writeHead(200, { 'Content-Type': 'text/plain' });
       
         for (let index = 1; index <= 10; index++) {
             res.write(`${a} * ${index} = ${table.mul(a, index)}\n`);
         }
-        // Close the server after sending the response
         res.end();
         server.close();
     });
-
-    // Listen on port 8080
     server.listen(8080);
-
-  
-
-    // Close the readline interface when done
     rl.close();
+});*/
+
+var calcu = require('./calcu.js');
+var readline = require('readline');
+var http = require('http');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
 });
+
+http.createServer(function (req, res) {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+
+    rl.question('Enter any number:', (a) => {
+        rl.question('Enter any number:', (b) => {
+            rl.question('Enter your choice from 1 to 4. 1 for add. 2 for sub. 3 for mul. 4 for div.\n', (ch) => {
+                
+                switch (ch) {
+                    case '1':
+                        res.write(`Answer: ${calcu.add(Number(a), Number(b))}`);
+                        break;
+                    case '2':
+                        res.write(`Answer: ${calcu.sub(Number(a), Number(b))}`);
+                        break;
+                    case '3':
+                        res.write(`Answer: ${calcu.mul(Number(a), Number(b))}`);
+                        break;
+                    case '4':
+                        res.write(`Answer: ${calcu.div(Number(a), Number(b))}`);
+                        break;
+                    default:
+                        res.write(`failed`);
+                }
+
+                res.end();
+                rl.close();
+            });
+        });
+    });
+}).listen(8080, () => {
+    console.log('Server is running at http://localhost:8080/');
+});
+
 
