@@ -129,7 +129,7 @@ const userSchema = new mongoose.Schema({
          });  
 const User = mongoose.model('User', userSchema);  
 
-app.get('/book',async function(req,res){
+app.get('/books',async function(req,res){
     try{
         const users = await User.find();
         res.json(users);
@@ -138,7 +138,7 @@ app.get('/book',async function(req,res){
         res.status(500).send();
     }
 });
-app.post('/book', async function(req,res){
+app.post('/book/add', async function(req,res){
     try {
         const user = new User({ book: req.body.book, date: req.body.date, id: req.body.id});
         await user.save();
@@ -148,7 +148,7 @@ app.post('/book', async function(req,res){
         res.status(500).send();
     }
 });
-app.delete('/book/:id', async function (req, res) {
+app.delete('/delbook/:id', async function (req, res) {
     try {
         const userId = req.params.id; 
         const result = await User.deleteOne({ id: userId }); 
@@ -163,7 +163,7 @@ app.delete('/book/:id', async function (req, res) {
         res.status(500).send();
     }
 });
-app.put('/book/:id', async function(req, res) {
+app.put('/updbook/:id', async function(req, res) {
     try {
         const userId = req.params.id;
         const updatedBookInfo = {

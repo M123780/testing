@@ -60,6 +60,27 @@ app.delete('/animal/:id', async function(req,res){
         }
 });
 
+app.put('/animal/:id', async function(req,res){
+    try{
+        const userId = req.params.id;
+        const updatedanimalInfo = {
+            name: req.body.name,
+            colour: req.body.colour,
+            age: req.body.age,
+            id: req.body.id
+        };
+        const user  = await Animal.findOneAndUpdate({ id: userId },updatedanimalInfo, { new: true });
+        
+        if (user) {
+            res.status(200).json(user); 
+        } else {
+            res.status(404).send("User not found");
+        }
+    }catch (error) {
+        console.error(error);
+        res.status(500).send();
+    }
+});
 app.listen(3000,()=>{
     
     console.log('Server is running at http://localhost:3000/');
